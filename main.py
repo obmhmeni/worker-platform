@@ -9,10 +9,12 @@ from backend.jobs import router as jobs_router
 
 app = FastAPI()
 
+# static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
+# routers
 app.include_router(auth_router)
 app.include_router(workers_router)
 app.include_router(recruiters_router)
