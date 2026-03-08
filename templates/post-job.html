@@ -1,21 +1,29 @@
 <html>
+
 <head>
+
 <link rel="stylesheet" href="/static/css/style.css">
+
 </head>
 
 <body>
 
 <h2>Post Job</h2>
 
-<form>
+<input id="title" placeholder="Job Title">
 
-<input placeholder="Job Title">
-<input placeholder="Location">
-<textarea placeholder="Description"></textarea>
+<input id="location" placeholder="Location">
 
-<button>Post Job</button>
+<input id="salary" placeholder="Salary">
 
-</form>
+<input id="duration" placeholder="Duration">
+
+<input id="workers" placeholder="Workers Needed">
+
+<button onclick="postJob()">Post Job</button>
+
+<script src="/static/js/jobs.js"></script>
 
 </body>
+
 </html>

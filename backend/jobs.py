@@ -1,16 +1,28 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
+from database import jobs_collection
 
 router = APIRouter()
 
-jobs = [
-    {"title": "Need Electrician", "location": "Patna"},
-    {"title": "Need Plumber", "location": "Delhi"},
-]
+class Job(BaseModel):
+    title: str
+    location: str
+    salary: str
+    duration: str
+    workers_needed: int
+
+
+@router.post("/api/post-job")
+def post_job(job: Job):
+
+    jobs_collection.insert_one(job.dict())
+
+    return {"status": "Job Posted"}
+
 
 @router.get("/api/jobs")
 def get_jobs():
-    return jobs
 
-@router.post("/api/post-job")
-def post_job():
-    return {"status": "job posted"}
+    jobs = list(jobs_collection.find({}, {"_id": 0}))
+
+    return jobs

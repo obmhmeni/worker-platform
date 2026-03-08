@@ -1,21 +1,27 @@
 <html>
+
 <head>
+
 <link rel="stylesheet" href="/static/css/style.css">
+
 </head>
 
 <body>
 
-<h2>Worker Profile</h2>
+<h2>Create Worker Profile</h2>
 
-<form>
+<input id="name" placeholder="Name">
 
-<input placeholder="Name">
-<input placeholder="Skill">
-<input placeholder="Experience">
+<input id="skill" placeholder="Skill">
 
-<button>Save</button>
+<input id="experience" placeholder="Experience">
 
-</form>
+<input id="location" placeholder="Location">
+
+<button onclick="createWorker()">Save Profile</button>
+
+<script src="/static/js/workers.js"></script>
 
 </body>
+
 </html>
