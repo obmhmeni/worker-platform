@@ -1,190 +1,146 @@
-// ===============================
-// WORKER PLATFORM JS
-// ===============================
-
-
-// -------------------------------
-// CREATE WORKER PROFILE
-// -------------------------------
-async function createWorker(){
+async function workerSignup() {
 
     const name = document.getElementById("name").value
-    const skill = document.getElementById("skill").value
+    const email = document.getElementById("email").value
+    const phone = document.getElementById("phone").value
+    const password = document.getElementById("password").value
+    const state = document.getElementById("state").value
+
+    const response = await fetch("/api/worker-signup", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            name: name,
+            email: email,
+            phone: phone,
+            password: password,
+            state: state
+        })
+
+    })
+
+    const data = await response.json()
+
+    if (data.status === "success") {
+
+        alert("Signup Successful")
+
+        window.location.href = "/login"
+
+    } else {
+
+        alert(data.message)
+
+    }
+
+}
+
+
+async function updateWorkerProfile() {
+
+    const email = document.getElementById("email").value
+    const address = document.getElementById("address").value
+    const qualification = document.getElementById("qualification").value
     const experience = document.getElementById("experience").value
-    const location = document.getElementById("location").value
+    const skills = document.getElementById("skills").value
 
-    if(!name || !skill || !experience || !location){
-        alert("Please fill all fields")
-        return
-    }
+    const response = await fetch("/api/worker-profile", {
 
-    const res = await fetch("/api/create-worker",{
+        method: "POST",
 
-        method:"POST",
-
-        headers:{
-            "Content-Type":"application/json"
+        headers: {
+            "Content-Type": "application/json"
         },
 
-        body:JSON.stringify({
-            name:name,
-            skill:skill,
-            experience:experience,
-            location:location,
-            rating:4.5
+        body: JSON.stringify({
+            email: email,
+            address: address,
+            qualification: qualification,
+            experience: experience,
+            skills: skills
         })
 
     })
 
-    const data = await res.json()
+    const data = await response.json()
 
-    alert(data.status)
+    if (data.status === "success") {
 
-}
+        alert("Profile Updated")
 
+    } else {
 
-
-// -------------------------------
-// LOAD WORKERS FROM DATABASE
-// -------------------------------
-async function loadWorkers(){
-
-    try{
-
-        const res = await fetch("/api/workers")
-
-        const workers = await res.json()
-
-        const container = document.getElementById("workers")
-
-        if(!container) return
-
-        let html = ""
-
-        workers.forEach(worker => {
-
-            html += `
-
-            <div class="worker-card card">
-
-                <h3>${worker.name}</h3>
-
-                <p><b>Skill:</b> ${worker.skill}</p>
-
-                <p><b>Experience:</b> ${worker.experience}</p>
-
-                <p><b>Location:</b> ${worker.location}</p>
-
-                <p><b>Rating:</b> ⭐ ${worker.rating}</p>
-
-                <div class="worker-buttons">
-
-                    <button onclick="hireWorker('${worker.name}')">
-                        Hire Worker
-                    </button>
-
-                    <button onclick="rateWorker('${worker.name}')">
-                        Rate ⭐
-                    </button>
-
-                </div>
-
-            </div>
-
-            `
-
-        })
-
-        container.innerHTML = html
-
-    }
-    catch(error){
-
-        console.log("Error loading workers:",error)
+        alert("Error updating profile")
 
     }
 
 }
 
 
+async function loadWorkers() {
 
-// -------------------------------
-// SEARCH WORKERS
-// -------------------------------
-function searchWorker(){
+    const response = await fetch("/api/workers")
 
-    const searchValue = document
-        .getElementById("search")
-        .value
-        .toLowerCase()
+    const workers = await response.json()
 
-    const cards = document.querySelectorAll(".worker-card")
+    const container = document.getElementById("workersContainer")
 
-    cards.forEach(card => {
+    container.innerHTML = ""
 
-        const text = card.innerText.toLowerCase()
+    workers.forEach(worker => {
 
-        if(text.includes(searchValue)){
-            card.style.display = "block"
-        }
-        else{
-            card.style.display = "none"
-        }
+        const card = document.createElement("div")
+
+        card.className = "worker-card"
+
+        card.innerHTML = `
+            <h3>${worker.name}</h3>
+            <p>Skills: ${worker.skills || "N/A"}</p>
+            <p>Experience: ${worker.experience || "N/A"}</p>
+            <p>Email: ${worker.email}</p>
+            <p>Phone: ${worker.phone}</p>
+        `
+
+        container.appendChild(card)
+
+    })
+
+}
+
+
+async function searchWorkers() {
+
+    const skill = document.getElementById("skillSearch").value
+
+    const response = await fetch(`/api/search-workers/${skill}`)
+
+    const workers = await response.json()
+
+    const container = document.getElementById("workersContainer")
+
+    container.innerHTML = ""
+
+    workers.forEach(worker => {
+
+        const card = document.createElement("div")
+
+        card.className = "worker-card"
+
+        card.innerHTML = `
+            <h3>${worker.name}</h3>
+            <p>Skills: ${worker.skills}</p>
+            <p>Experience: ${worker.experience}</p>
+            <p>Email: ${worker.email}</p>
+            <p>Phone: ${worker.phone}</p>
+        `
+
+        container.appendChild(card)
 
     })
 
 }
-
-
-
-// -------------------------------
-// HIRE WORKER BUTTON
-// -------------------------------
-function hireWorker(name){
-
-    alert("Job request sent to " + name)
-
-}
-
-
-
-// -------------------------------
-// RATE WORKER
-// -------------------------------
-async function rateWorker(name){
-
-    const rating = prompt("Enter rating (1 - 5)")
-
-    if(!rating) return
-
-    const res = await fetch("/api/rate-worker",{
-
-        method:"POST",
-
-        headers:{
-            "Content-Type":"application/json"
-        },
-
-        body:JSON.stringify({
-            worker_name:name,
-            rating:rating
-        })
-
-    })
-
-    const data = await res.json()
-
-    alert(data.status)
-
-}
-
-
-
-// -------------------------------
-// PAGE LOAD EVENT
-// -------------------------------
-document.addEventListener("DOMContentLoaded", function(){
-
-    loadWorkers()
-
-})

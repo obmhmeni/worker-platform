@@ -1,116 +1,39 @@
-// ================================
-// AUTHENTICATION SYSTEM
-// ================================
+async function loginUser() {
 
+    const email = document.getElementById("email").value
+    const password = document.getElementById("password").value
+    const role = document.getElementById("role").value
 
-// -------------------------
-// SIGNUP FUNCTION
-// -------------------------
-async function signup(){
+    const response = await fetch("/api/login", {
 
-const name = document.getElementById("name").value
-const email = document.getElementById("email").value
-const password = document.getElementById("password").value
-const role = document.getElementById("role").value
+        method: "POST",
 
-if(!name || !email || !password){
+        headers: {
+            "Content-Type": "application/json"
+        },
 
-alert("Please fill all fields")
-return
+        body: JSON.stringify({
+            email: email,
+            password: password,
+            role: role
+        })
 
-}
+    })
 
-const res = await fetch("/api/signup",{
+    const data = await response.json()
 
-method:"POST",
+    if (data.status === "success") {
 
-headers:{
-"Content-Type":"application/json"
-},
+        alert("Welcome to WorkerHire")
 
-body:JSON.stringify({
+        setTimeout(() => {
+            window.location.href = data.redirect
+        }, 2000)
 
-name:name,
-email:email,
-password:password,
-role:role
+    } else {
 
-})
+        alert(data.message)
 
-})
-
-const data = await res.json()
-
-alert(data.message)
-
-if(data.status === "success"){
-
-window.location.href="/login"
-
-}
-
-}
-
-
-
-// -------------------------
-// LOGIN FUNCTION
-// -------------------------
-async function login(){
-
-const email = document.getElementById("email").value
-const password = document.getElementById("password").value
-
-if(!email || !password){
-
-alert("Enter email and password")
-return
-
-}
-
-const res = await fetch("/api/login",{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-
-email:email,
-password:password
-
-})
-
-})
-
-const data = await res.json()
-
-if(data.status === "success"){
-
-alert("Welcome " + data.name)
-
-// Redirect based on role
-
-if(data.role === "worker"){
-
-window.location.href="/worker-dashboard"
-
-}
-
-else if(data.role === "recruiter"){
-
-window.location.href="/recruiter-dashboard"
-
-}
-
-}
-
-else{
-
-alert(data.message)
-
-}
+    }
 
 }

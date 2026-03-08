@@ -1,8 +1,11 @@
+<!DOCTYPE html>
 <html>
 
 <head>
 
-<link rel="stylesheet" href="/static/css/style.css">
+<title>Post Job</title>
+
+<script src="/static/js/jobs.js"></script>
 
 </head>
 
@@ -10,19 +13,23 @@
 
 <h2>Post Job</h2>
 
-<input id="title" placeholder="Job Title">
+<input id="job_name" placeholder="Job Name">
 
 <input id="location" placeholder="Location">
 
+<input id="description" placeholder="Description">
+
+<input id="qualification" placeholder="Qualification">
+
+<input id="experience" placeholder="Experience">
+
+<input id="workers_needed" placeholder="Workers Needed">
+
 <input id="salary" placeholder="Salary">
 
-<input id="duration" placeholder="Duration">
-
-<input id="workers" placeholder="Workers Needed">
+<input id="company" placeholder="Company">
 
 <button onclick="postJob()">Post Job</button>
-
-<script src="/static/js/jobs.js"></script>
 
 </body>
 

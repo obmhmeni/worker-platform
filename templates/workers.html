@@ -1,20 +1,19 @@
+<!DOCTYPE html>
 <html>
 
 <head>
 
-<link rel="stylesheet" href="/static/css/style.css">
+<title>Workers</title>
+
+<script src="/static/js/workers.js"></script>
 
 </head>
 
-<body>
-<input id="search" placeholder="Search by skill">
+<body onload="loadWorkers()">
 
-<button onclick="searchWorker()">Search</button>
-<h2>Available Workers</h2>
+<h1>Workers List</h1>
 
-<div id="workers"></div>
-
-<script src="/static/js/workers.js"></script>
+<div id="workersContainer"></div>
 
 </body>
 

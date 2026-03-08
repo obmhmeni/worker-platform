@@ -5,31 +5,23 @@
 
 <title>Recruiter Dashboard</title>
 
-<link rel="stylesheet" href="/static/css/style.css">
+<script src="/static/js/workers.js"></script>
 
 </head>
 
-<body>
+<body onload="loadWorkers()">
 
 <h1>Recruiter Dashboard</h1>
 
-<div class="dashboard">
-
-<div class="card">
-<h3>Active Jobs</h3>
-<p>5</p>
-</div>
-
-<div class="card">
-<h3>Workers Hired</h3>
-<p>12</p>
-</div>
-
-</div>
-
 <a href="/post-job">Post Job</a>
 
-<a href="/workers">Search Workers</a>
+<h2>Search Workers</h2>
+
+<input id="skillSearch" placeholder="Search Skill">
+
+<button onclick="searchWorkers()">Search</button>
+
+<div id="workersContainer"></div>
 
 </body>
 

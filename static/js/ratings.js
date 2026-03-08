@@ -1,38 +1,35 @@
-// ===========================
-// WORKER RATING SYSTEM
-// ===========================
+async function submitRating() {
 
+    const worker = document.getElementById("workerEmail").value
+    const rating = document.getElementById("rating").value
+    const comment = document.getElementById("comment").value
 
-async function rateWorker(workerName){
+    const response = await fetch("/api/rate-worker", {
 
-let rating = prompt("Give rating from 1 to 5")
+        method: "POST",
 
-if(!rating){
+        headers: {
+            "Content-Type": "application/json"
+        },
 
-alert("Rating cancelled")
-return
+        body: JSON.stringify({
+            worker: worker,
+            rating: rating,
+            comment: comment
+        })
 
-}
+    })
 
-const res = await fetch("/api/rate-worker",{
+    const data = await response.json()
 
-method:"POST",
+    if (data.status === "success") {
 
-headers:{
-"Content-Type":"application/json"
-},
+        alert("Rating Submitted")
 
-body:JSON.stringify({
+    } else {
 
-worker_name:workerName,
-rating:parseFloat(rating)
+        alert("Error submitting rating")
 
-})
-
-})
-
-const data = await res.json()
-
-alert(data.status)
+    }
 
 }
